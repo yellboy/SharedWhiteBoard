@@ -22,10 +22,10 @@ namespace Assets.Scripts
             _httpRequestService = Registration.Instance.Resolve<IHttpRequestService>();
         }
 
-        //void Start()
-        //{
-        //    SwitchInputObjectsActiveState(false);
-        //}
+        void Start()
+        {
+            SwitchInputObjectsActiveState(false);
+        }
 
         public void Connect()
         {
