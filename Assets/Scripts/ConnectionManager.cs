@@ -1,4 +1,5 @@
-﻿using Assets.Interfaces;
+﻿using System.Collections;
+using Assets.Interfaces;
 using HoloToolkit.Unity;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Assets.Scripts
 {
     public class ConnectionManager : Singleton<ConnectionManager>
     {
-        private const string StartSessionUrl = "start";
+        private const string StartSessionUrl = "http://distributedwhiteboard.azurewebsites.net/SessionApi/Session";
         private const string ConnectWithPinUrl = "pin{0}";
 
         private IHttpRequestService _httpRequestService;
@@ -36,9 +37,24 @@ namespace Assets.Scripts
         {
             //var pinAsString = _httpRequestService.GetStringResult(StartSessionUrl);
             //_pin = int.Parse(pinAsString);
-            _pin = 111111;
+
+            StartCoroutine(GetPin());
+
+            //_pin = 111111;
             SwitchInputObjectsActiveState(false);
             ShowPin();
+        }
+
+        private IEnumerator GetPin()
+        {
+            var www = new WWW(StartSessionUrl);
+
+            yield return www;
+
+            _pin = int.Parse(www.text);
+            SwitchInputObjectsActiveState(false);
+            ShowPin();
+
         }
 
         public void ConnectWithPin(int pin)

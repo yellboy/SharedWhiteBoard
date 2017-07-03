@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Assets.Interfaces;
 using HoloToolkit.Unity;
@@ -11,7 +12,7 @@ namespace Assets.Scripts
     public class PhotoCaptureManager : Singleton<PhotoCaptureManager>
     {
         private const string PhotoUploadUrl =
-            @"https://sharedwhiteboard.azurewebsites.net/api/HttpTriggerCSharp1?code=/ETH9aWwijjNKCw6De9orgOkyV4r0dS3Wlk3Vs8qwyavJa//VUSzgQ==";
+            @"localhost:6364/ImageApi/Image";
         private PhotoCapture _capturedPhotoObject;
         private Texture2D _targetTexture;
         private string _filePath;
@@ -60,7 +61,7 @@ namespace Assets.Scripts
                 var fileName = string.Format("PhotoCapture_{0}.jpg", Time.time);
                 _filePath = System.IO.Path.Combine(Application.persistentDataPath, fileName);
 
-                //ShowText(string.Format("Uploading photo to {0}", PhotoUploadUrl));
+                ShowText(string.Format("Uploading photo to {0}", PhotoUploadUrl));
 
                 _capturedPhotoObject.TakePhotoAsync(OnPhotoCapturedToMemory);
                 //_capturedPhotoObject.TakePhotoAsync(_filePath, PhotoCaptureFileOutputFormat.JPG, OnCapturedToDisk);
@@ -75,11 +76,20 @@ namespace Assets.Scripts
 
                 var picture = _targetTexture.EncodeToJPG();
 
-                _httpRequestService.Post(PhotoUploadUrl, picture);
+                //_httpRequestService.Post(PhotoUploadUrl, picture);
+
+                StartCoroutine(UploadPhoto(picture));
 
                 ShowText(string.Format("Photo uploaded to {0}", PhotoUploadUrl));
                 _capturedPhotoObject.StopPhotoModeAsync(OnPhotoModeStopped);
             }
+        }
+
+        private IEnumerator UploadPhoto(byte[] picture)
+        {
+            var www = new WWW(PhotoUploadUrl, picture);
+
+            yield return www;
         }
 
         private void OnCapturedToDisk(PhotoCapture.PhotoCaptureResult result)

@@ -8,7 +8,7 @@ namespace Assets.Scripts
 {
     public class WhiteBoardBehaviour : MonoBehaviour
     {
-        private const string GetLastImageUrl = "https://docs.unity3d.com/uploads/Main/ShadowIntro.png";
+        private const string GetLastImageUrl = "http://distributedwhiteboard.azurewebsites.net/ImageApi/Image";
 
         private IHttpRequestService _httpRequestService;
 
@@ -19,8 +19,18 @@ namespace Assets.Scripts
 
         public void GetLastPicture()
         {
-            StartCoroutine(_httpRequestService.GetImageResult(GetLastImageUrl, ApplyResultToMainTexture));
+            //StartCoroutine(_httpRequestService.GetImageResult(GetLastImageUrl, ApplyResultToMainTexture));
+            StartCoroutine(GetImageFromUrl());
 
+        }
+
+        private IEnumerator GetImageFromUrl()
+        {
+            var www = new WWW(GetLastImageUrl);
+
+            yield return www;
+
+            gameObject.GetComponent<MeshRenderer>().material.mainTexture = www.texture;
         }
 
         private void ApplyResultToMainTexture(object result)
