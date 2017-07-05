@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Enums\ParticipantOrder.cs" />
     <Compile Include="Assets\HoloToolkit-Examples\ColorPicker\GazeableColorPicker.cs" />
     <Compile Include="Assets\HoloToolkit-Examples\GazeRuler\Scripts\DeleteLine.cs" />
     <Compile Include="Assets\HoloToolkit-Examples\GazeRuler\Scripts\IGeometry.cs" />
@@ -375,13 +376,16 @@
     <Compile Include="Assets\HoloToolkit\Utilities\Tests\Scripts\TextToSpeechOnTap.cs" />
     <Compile Include="Assets\Interfaces\IHttpRequestService.cs" />
     <Compile Include="Assets\Registration.cs" />
+    <Compile Include="Assets\Resources\Constants.cs" />
     <Compile Include="Assets\Scripts\ConnectionManager.cs" />
     <Compile Include="Assets\Scripts\FadingObject.cs" />
     <Compile Include="Assets\Scripts\HolographicKeyboardBehavior.cs" />
     <Compile Include="Assets\Scripts\PhotoCaptureManager.cs" />
     <Compile Include="Assets\Scripts\PositioningManager.cs" />
+    <Compile Include="Assets\Scripts\RotationTextBehaviour.cs" />
     <Compile Include="Assets\Scripts\UserOutputManager.cs" />
     <Compile Include="Assets\Scripts\WhiteBoardBehaviour.cs" />
+    <Compile Include="Assets\Scripts\WhiteBoardFrameBehaviour.cs" />
     <Compile Include="Assets\Services\HttpRequestService.cs" />
   </ItemGroup>
   <ItemGroup>

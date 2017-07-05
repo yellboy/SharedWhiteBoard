@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Assets.Interfaces;
 using HoloToolkit.Unity;
 using UnityEngine;
 using UnityEngine.VR.WSA.WebCam;
@@ -11,23 +10,13 @@ namespace Assets.Scripts
     [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
     public class PhotoCaptureManager : Singleton<PhotoCaptureManager>
     {
-        private const string PhotoUploadUrl =
-            @"localhost:6364/ImageApi/Image";
         private PhotoCapture _capturedPhotoObject;
         private Texture2D _targetTexture;
         private string _filePath;
-        private IHttpRequestService _httpRequestService;
 
         public UserOutputManager UserOutputManager;
 
         public GameObject WhiteBoard;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            _httpRequestService = Registration.Instance.Resolve<IHttpRequestService>();
-        }
 
         public void CapturePhoto()
         {
@@ -61,7 +50,7 @@ namespace Assets.Scripts
                 var fileName = string.Format("PhotoCapture_{0}.jpg", Time.time);
                 _filePath = System.IO.Path.Combine(Application.persistentDataPath, fileName);
 
-                ShowText(string.Format("Uploading photo to {0}", PhotoUploadUrl));
+                ShowText(string.Format("Uploading photo to {0}", ParametrizedImageUploadUrl));
 
                 _capturedPhotoObject.TakePhotoAsync(OnPhotoCapturedToMemory);
                 //_capturedPhotoObject.TakePhotoAsync(_filePath, PhotoCaptureFileOutputFormat.JPG, OnCapturedToDisk);
@@ -80,14 +69,14 @@ namespace Assets.Scripts
 
                 StartCoroutine(UploadPhoto(picture));
 
-                ShowText(string.Format("Photo uploaded to {0}", PhotoUploadUrl));
+                ShowText(string.Format("Photo uploaded to {0}", ParametrizedImageUploadUrl));
                 _capturedPhotoObject.StopPhotoModeAsync(OnPhotoModeStopped);
             }
         }
 
         private IEnumerator UploadPhoto(byte[] picture)
         {
-            var www = new WWW(PhotoUploadUrl, picture);
+            var www = new WWW(ParametrizedImageUploadUrl, picture);
 
             yield return www;
         }
@@ -110,6 +99,11 @@ namespace Assets.Scripts
         private void ShowText(string text)
         {
             UserOutputManager.ShowOutput(text);
+        }
+
+        private static string ParametrizedImageUploadUrl
+        {
+            get { return string.Format(Resources.Constants.GetImageUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.ParticipantOrder); }
         }
     }
 }

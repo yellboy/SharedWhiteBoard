@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Assets.Interfaces;
+using Assets.Enums;
 using HoloToolkit.Unity;
 using UnityEngine;
 
@@ -7,20 +7,16 @@ namespace Assets.Scripts
 {
     public class ConnectionManager : Singleton<ConnectionManager>
     {
-        private const string StartSessionUrl = "http://distributedwhiteboard.azurewebsites.net/SessionApi/Session";
-        private const string ConnectWithPinUrl = "pin{0}";
-
-        private IHttpRequestService _httpRequestService;
         private int? _pin;
 
         public GameObject UserInputObjects;
         public UserOutputManager UserOutputManager;
 
-        protected override void Awake()
-        {
-            base.Awake();
+        public ParticipantOrder ParticipantOrder { get; private set; }
 
-            _httpRequestService = Registration.Instance.Resolve<IHttpRequestService>();
+        public bool Connected
+        {
+            get { return _pin.HasValue; }
         }
 
         void Start()
@@ -35,34 +31,39 @@ namespace Assets.Scripts
 
         public void StartSession()
         {
-            //var pinAsString = _httpRequestService.GetStringResult(StartSessionUrl);
-            //_pin = int.Parse(pinAsString);
-
             StartCoroutine(GetPin());
-
-            //_pin = 111111;
-            SwitchInputObjectsActiveState(false);
-            ShowPin();
         }
 
         private IEnumerator GetPin()
         {
-            var www = new WWW(StartSessionUrl);
+            var www = new WWW(string.Format(Resources.Constants.StartSessionUrl, Resources.Constants.ApplicationUrl));
 
             yield return www;
 
             _pin = int.Parse(www.text);
+
             SwitchInputObjectsActiveState(false);
             ShowPin();
 
+            ParticipantOrder = ParticipantOrder.A;
         }
 
         public void ConnectWithPin(int pin)
         {
             _pin = pin;
-            //_httpRequestService.GetStringResult(string.Format(ConnectWithPinUrl, _pin));
+            StartCoroutine(ConnectWithPin());
+        }
+
+        private IEnumerator ConnectWithPin()
+        {
+            var www = new WWW(string.Format(Resources.Constants.ConnectToExistingSessionUrl, Resources.Constants.ApplicationUrl, _pin));
+
+            yield return www;
+
             SwitchInputObjectsActiveState(false);
             UserOutputManager.ShowOutput("Connected");
+
+            ParticipantOrder = ParticipantOrder.B;
         }
 
         public void ShowPin()
