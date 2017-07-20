@@ -5,6 +5,19 @@ namespace Assets.Scripts
 {
     public class WhiteBoardBehaviour : MonoBehaviour
     {
+        System.Threading.Timer _timer;
+
+        private void Start()
+        {
+            int secondsInterval = 10;
+            _timer = new System.Threading.Timer(Tick, null, 0, secondsInterval * 1000);
+        }
+
+        private void Tick(object state)
+        {
+            GetLastPicture();
+        }
+
         public void GetLastPicture()
         {
             StartCoroutine(GetImageFromUrl());
