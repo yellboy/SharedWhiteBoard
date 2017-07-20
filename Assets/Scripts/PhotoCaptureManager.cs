@@ -50,7 +50,9 @@ namespace Assets.Scripts
                 var fileName = string.Format("PhotoCapture_{0}.jpg", Time.time);
                 _filePath = System.IO.Path.Combine(Application.persistentDataPath, fileName);
 
-                ShowText(string.Format("Uploading photo to {0}", ParametrizedImageUploadUrl));
+                //ShowText(string.Format("Uploading photo to {0}", ParametrizedImageUploadUrl));
+
+                WhiteBoardFrameColorManager.Instance.UpdateSent();
 
                 _capturedPhotoObject.TakePhotoAsync(OnPhotoCapturedToMemory);
                 //_capturedPhotoObject.TakePhotoAsync(_filePath, PhotoCaptureFileOutputFormat.JPG, OnCapturedToDisk);
@@ -69,7 +71,7 @@ namespace Assets.Scripts
 
                 StartCoroutine(UploadPhoto(picture));
 
-                ShowText(string.Format("Photo uploaded to {0}", ParametrizedImageUploadUrl));
+                //ShowText(string.Format("Photo uploaded to {0}", ParametrizedImageUploadUrl));
                 _capturedPhotoObject.StopPhotoModeAsync(OnPhotoModeStopped);
             }
         }
