@@ -1,9 +1,10 @@
-﻿using System;
+﻿using HoloToolkit.Unity;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class WhiteBoardFrameBehaviour : MonoBehaviour
+    public class WhiteBoardFrameBehaviour : Singleton<WhiteBoardFrameBehaviour> //MonoBehaviour
     {
         private const float MinimumDistance = 1.0f;
         private const float MaximumDistance = 2f;
@@ -24,7 +25,7 @@ namespace Assets.Scripts
             gameObject.GetComponent<MeshRenderer>().material = PositionIsGoodForSending ? GreenMaterial : RedMaterial;
         }
 
-        private bool PositionIsGoodForSending
+        public bool PositionIsGoodForSending
         {
             get { return RotationIsSimilarToMainCamera && DistanceIsGood; }
         }

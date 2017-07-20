@@ -10,6 +10,7 @@ namespace Assets.Scripts
     [SuppressMessage("ReSharper", "PossibleLossOfFraction")]
     public class PhotoCaptureManager : Singleton<PhotoCaptureManager>
     {
+        System.Threading.Timer _timer;
         private PhotoCapture _capturedPhotoObject;
         private Texture2D _targetTexture;
         private string _filePath;
@@ -17,6 +18,20 @@ namespace Assets.Scripts
         public UserOutputManager UserOutputManager;
 
         public GameObject WhiteBoard;
+
+        private void Start()
+        {
+            int secondsInterval = 10;
+            _timer = new System.Threading.Timer(Tick, null, 0, secondsInterval * 1000);
+        }
+
+        private void Tick(object state)
+        {
+            if (WhiteBoardFrameBehaviour.Instance.PositionIsGoodForSending)
+            {
+                CapturePhoto();
+            }
+        }
 
         public void CapturePhoto()
         {
