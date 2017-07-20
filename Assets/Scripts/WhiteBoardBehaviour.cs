@@ -44,7 +44,7 @@ namespace Assets.Scripts
 
         private IEnumerator GetDarkAreasFromUrl()
         {
-            var url = "localhost:6364/ImageApi/Image/A/DarkAreas";
+            var url = string.Format(Resources.Constants.GetImageUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.ParticipantOrder);
 
             var www = new WWW(url);
 
