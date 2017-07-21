@@ -1,10 +1,11 @@
 ﻿using System.Collections;
+using HoloToolkit.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    public class UserOutputManager : MonoBehaviour
+    public class UserOutputManager : Singleton<UserOutputManager>
     {
         public Text OutputText;
 

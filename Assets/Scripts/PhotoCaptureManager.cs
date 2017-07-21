@@ -22,16 +22,16 @@ namespace Assets.Scripts
         private void Start()
         {
             int secondsInterval = 10;
-            _timer = new System.Threading.Timer(Tick, null, 0, secondsInterval * 1000);
+            //_timer = new System.Threading.Timer(Tick, null, 0, secondsInterval * 1000);
         }
 
-        private void Tick(object state)
-        {
-            if (WhiteBoardFrameBehaviour.Instance.PositionIsGoodForSending)
-            {
-                CapturePhoto();
-            }
-        }
+        //private void Tick(object state)
+        //{
+        //    if (WhiteBoardFrameBehaviour.Instance.PositionIsGoodForSending)
+        //    {
+        //        CapturePhoto();
+        //    }
+        //}
 
         public void CapturePhoto()
         {

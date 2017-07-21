@@ -8,14 +8,23 @@ namespace Assets.Scripts
     {
         public GameObject WhiteBoard;
 
+        public bool PositioningInProgress { get; private set; }
+
+        private void Start()
+        {
+            PositioningInProgress = true;
+        }
+
         public void Done()
         {
             SwitchPositioningEnabled(false);
+            PositioningInProgress = false;
         }
 
         public void Position()
         {
             SwitchPositioningEnabled(true);
+            PositioningInProgress = true;
         }
 
         private void SwitchPositioningEnabled(bool positioningEnabled)

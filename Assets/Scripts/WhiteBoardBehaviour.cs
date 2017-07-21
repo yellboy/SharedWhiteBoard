@@ -13,12 +13,17 @@ namespace Assets.Scripts
         private void Start()
         {
             int secondsInterval = 10;
-            _timer = new System.Threading.Timer(Tick, null, 0, secondsInterval * 1000);
+            InvokeRepeating("Tick", 0, secondsInterval);
         }
 
-        private void Tick(object state)
+        public void Tick()
         {
-            GetLastPicture();
+            UserOutputManager.Instance.ShowOutput("Get");
+
+            if (!PositioningManager.Instance.PositioningInProgress)
+            {
+                GetLastPicture();
+            }
         }
 
         public void GetLastPicture()
@@ -44,7 +49,7 @@ namespace Assets.Scripts
 
         private IEnumerator GetDarkAreasFromUrl()
         {
-            var url = string.Format(Resources.Constants.GetImageUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.ParticipantOrder);
+            var url = string.Format(Resources.Constants.GetDarkImageUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.ParticipantOrder);
 
             var www = new WWW(url);
 
