@@ -33,7 +33,13 @@ namespace Assets.Scripts
 
         private IEnumerator GetImageFromUrl()
         {
-            var url = string.Format(Resources.Constants.GetImageUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.ParticipantOrder);
+            if (!ConnectionManager.Instance.Pin.HasValue)
+            {
+                yield break;
+            }
+
+            var url = string.Format(Resources.Constants.GetImageUrl, Resources.Constants.ApplicationUrl,
+                ConnectionManager.Instance.Pin.Value, ConnectionManager.Instance.ParticipantOrder);
 
             var www = new WWW(url);
 
@@ -49,7 +55,12 @@ namespace Assets.Scripts
 
         private IEnumerator GetDarkAreasFromUrl()
         {
-            var url = string.Format(Resources.Constants.GetDarkImageUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.ParticipantOrder);
+            if (!ConnectionManager.Instance.Pin.HasValue)
+            {
+                yield break;
+            }
+
+            var url = string.Format(Resources.Constants.GetDarkImageUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.Pin.Value, ConnectionManager.Instance.ParticipantOrder);
 
             var www = new WWW(url);
 

@@ -93,7 +93,14 @@ namespace Assets.Scripts
 
         private IEnumerator UploadPhoto(byte[] picture)
         {
-            var www = new WWW(ParametrizedImageUploadUrl, picture);
+            if (!ConnectionManager.Instance.Pin.HasValue)
+            {
+                yield break;
+            }
+
+            var url = string.Format(Resources.Constants.ImageUploadUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.Pin.Value, ConnectionManager.Instance.ParticipantOrder);
+
+            var www = new WWW(url, picture);
 
             yield return www;
         }
@@ -116,11 +123,6 @@ namespace Assets.Scripts
         private void ShowText(string text)
         {
             UserOutputManager.ShowOutput(text);
-        }
-
-        private static string ParametrizedImageUploadUrl
-        {
-            get { return string.Format(Resources.Constants.GetImageUrl, Resources.Constants.ApplicationUrl, ConnectionManager.Instance.ParticipantOrder); }
         }
     }
 }

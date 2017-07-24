@@ -7,7 +7,7 @@ namespace Assets.Scripts
 {
     public class ConnectionManager : Singleton<ConnectionManager>
     {
-        private int? _pin;
+        public int? Pin { get; private set; }
 
         public GameObject UserInputObjects;
         public UserOutputManager UserOutputManager;
@@ -16,7 +16,7 @@ namespace Assets.Scripts
 
         public bool Connected
         {
-            get { return _pin.HasValue; }
+            get { return Pin.HasValue; }
         }
 
         void Start()
@@ -40,7 +40,7 @@ namespace Assets.Scripts
 
             yield return www;
 
-            _pin = int.Parse(www.text);
+            Pin = int.Parse(www.text);
 
             SwitchInputObjectsActiveState(false);
             ShowPin();
@@ -50,13 +50,13 @@ namespace Assets.Scripts
 
         public void ConnectWithPin(int pin)
         {
-            _pin = pin;
+            Pin = pin;
             StartCoroutine(ConnectWithPin());
         }
 
         private IEnumerator ConnectWithPin()
         {
-            var www = new WWW(string.Format(Resources.Constants.ConnectToExistingSessionUrl, Resources.Constants.ApplicationUrl, _pin));
+            var www = new WWW(string.Format(Resources.Constants.ConnectToExistingSessionUrl, Resources.Constants.ApplicationUrl, Pin));
 
             yield return www;
 
@@ -68,7 +68,7 @@ namespace Assets.Scripts
 
         public void ShowPin()
         {
-            UserOutputManager.ShowOutput(_pin.HasValue ? string.Format("Session pin is {0}", _pin) : "No pin received");
+            UserOutputManager.ShowOutput(Pin.HasValue ? string.Format("Session pin is {0}", Pin) : "No pin received");
         }
 
         private void SwitchInputObjectsActiveState(bool activeState)
