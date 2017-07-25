@@ -12,7 +12,7 @@
 
         public const string GetDarkImageUrl = "{0}/ImageApi/Session/{1}/Image/{2}/Dark";
 
-        public const string ImageUploadUrl = "{0}/ImageApi/Session{1}/Image/{2}";
+        public const string ImageUploadUrl = "{0}/ImageApi/Session/{1}/Image/{2}";
 
         public const string StartSessionUrl = "{0}/SessionApi/Session";
     }
